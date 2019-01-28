@@ -7,6 +7,9 @@ before_install:
   # The following command was given after the encryption operation from travis CLI
   - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
   
+  # Needed to fix script that will be running next
+  - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+
   # install google cloud CLI
   # curl downloads a bash script.  It is then piped into bash and the stdout is 
   #     redirected to /dev/null so we don't have to see it
@@ -30,3 +33,6 @@ before_install:
 
   # Define the cluster to use 
   - gcloud container clusters get-credentials fibonacci-cluster 
+
+  # login to Docker
+  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
