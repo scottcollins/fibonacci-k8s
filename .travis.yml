@@ -1,0 +1,32 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  # The following command was given after the encryption operation from travis CLI
+  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
+  
+  # install google cloud CLI
+  # curl downloads a bash script.  It is then piped into bash and the stdout is 
+  #     redirected to /dev/null so we don't have to see it
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+
+  # Sources the file path.bash.inc and apply changes to the shell
+  - source $HOME/google-cloud-sdk/path.bash.inc
+
+  # Install kubectl in the environment for the build using the google cloud CLI (gcloud)
+  - gcloud components update kubectl
+
+  # Activate credentials from google IAM account and authorize access
+  #   Credentials are stored in the service-account.json file
+  - glcoud auth activate-service-account --key-file service-account.json
+
+  # Configure the gcloud CLI to use the proper project
+  - gcloud config set project fibonacci-k8s-230004
+
+  # Define a compute zone.  Get this from the k8s cluster you created
+  - gcloud config set compute/zone us-east1-d
+
+  # Define the cluster to use 
+  - gcloud container clusters get-credentials fibonacci-cluster 
