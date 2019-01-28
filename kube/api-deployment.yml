@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+      tier: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api
+        tier: api-gateway
+    spec:
+      containers:
+        - name: api
+          image: scottcollins/fibonacci-api
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - name: api-port
+              containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              valueFrom: 
+                configMapKeyRef:
+                  name: redis-config
+                  key: host                  
+            - name: REDIS_PORT
+              valueFrom: 
+                configMapKeyRef:
+                  name: redis-config
+                  key: port 
+            - name: PGHOST
+              valueFrom: 
+                configMapKeyRef:
+                  name: postgres-config
+                  key: host 
+            - name: PGPORT
+              valueFrom: 
+                configMapKeyRef:
+                  name: postgres-config
+                  key: port 
+            - name: PGUSER
+              valueFrom: 
+                configMapKeyRef:
+                  name: postgres-config
+                  key: user 
+            - name: PGDATABASE
+              valueFrom: 
+                configMapKeyRef:
+                  name: postgres-config
+                  key: database 
+            - name: PGPASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: passwords
+                  key: postgres

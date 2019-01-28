@@ -1,0 +1,38 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -f ./client/Dockerfile.dev -t scottcollins/fibonacci-client-test ./client
+
+script:
+  - docker run scottcollins/fibonacci-client-test npm test -- --coverage
+
+after_success:
+  - docker build -t scottcollins/fibonacci-client:latest ./client
+  - docker build -t scottcollins/fibonacci-api:latest ./server
+  - docker build -t scottcollins/fibonacci-worker:latest ./worker
+  - docker build -t scottcollins/fibonacci-nginx:latest ./nginx
+  
+  # Log into docker for this terminal session
+  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+  
+  # Push images to the docker hub repo
+  - docker push scottcollins/fibonacci-client:latest
+  - docker push scottcollins/fibonacci-api:latest
+  - docker push scottcollins/fibonacci-worker:latest
+  - docker push scottcollins/fibonacci-nginx:latest
+
+deploy: 
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: fibonacci
+  env: Fibonacci-env
+  bucket_name: elasticbeanstalk-us-east-1-367770124266
+  bucket_path: fibonacci
+  on:
+    branch: master
+  access_key_id: "$AWS_ACCESS_KEY_ID"
+  secret_access_key:
+    secure: "$AWS_SECRET_ACCESS_KEY"

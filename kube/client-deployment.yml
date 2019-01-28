@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: client
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: client
+        tier: web
+    spec:
+      containers:
+        - name: client
+          image: scottcollins/fibonacci-client
+          ports:
+            - name: client-port
+              containerPort: 3000
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          
+          

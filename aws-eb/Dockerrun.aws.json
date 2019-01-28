@@ -1,0 +1,77 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "scottcollins/fibonacci-client",
+            "hostname": "client",
+            "essential": false,
+            "memory": "128"
+        },
+        {
+            "name": "api",
+            "image": "scottcollins/fibonacci-api",
+            "hostname": "api",
+            "essential": false,
+            "environment": [
+                { 
+                    "name": "REDIS_HOST",
+                    "value": "fibonacci-redis.x8xj0w.0001.use1.cache.amazonaws.com"
+                },
+                { 
+                    "name": "REDIS_PORT",
+                    "value": "6379"
+                },
+                { 
+                    "name": "PGHOST",
+                    "value": "fibonacci-db.cbqlntqlgy3w.us-east-1.rds.amazonaws.com"
+                },
+                { 
+                    "name": "PGPORT",
+                    "value": "5432"
+                },
+                { 
+                    "name": "PGUSER",
+                    "value": "postgres"
+                },
+                { 
+                    "name": "PGDATABASE",
+                    "value": "postgres"
+                }
+            ],
+            "memory": "128"
+        },
+        {
+            "name": "worker",
+            "image": "scottcollins/fibonacci-worker",
+            "essential": false,
+            "environment": [
+                { 
+                    "name": "REDIS_HOST",
+                    "value": "fibonacci-redis.x8xj0w.0001.use1.cache.amazonaws.com"
+                },
+                { 
+                    "name": "REDIS_PORT",
+                    "value": "6379"
+                }
+            ],
+            "memory": "128"
+        },
+        {
+            "name": "nginx",
+            "image": "scottcollins/fibonacci-nginx",
+            "essential": true,
+            "portMappings": [
+              { 
+                  "hostPort": 80,
+                  "containerPort": 80
+              }
+            ],
+            "links": [
+              "client",
+              "api"
+            ],
+            "memory": "128"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels: 
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: scottcollins/fibonacci-worker
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          env:
+            - name: REDIS_HOST
+              valueFrom: 
+                configMapKeyRef:
+                  name: redis-config
+                  key: host                  
+            - name: REDIS_PORT
+              valueFrom: 
+                configMapKeyRef:
+                  name: redis-config
+                  key: port 

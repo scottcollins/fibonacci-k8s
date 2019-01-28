@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10.5-alpine
+          ports:
+            - name: postgres-port
+              containerPort: 5432
+          resources:
+            limits:
+              cpu: 300m
+              memory: 400Mi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+            - name: test1
+              mountPath: /etc/test1/app.config
+              subPath: app.config
+            - name: test2
+              mountPath: /etc/test2/package.json
+              subPath: package.json
+          env:
+            # Defines the default password for postgres
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: passwords
+                  key: postgres
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: db-data-claim  
+        - name: test1
+          configMap:
+            name: test-config
+        - name: test2
+          configMap:
+            name: test-config
