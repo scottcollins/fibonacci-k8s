@@ -15,10 +15,10 @@ spec:
       containers:
         - name: redis
           image: redis:4.0-alpine
-          resources:
-            limits:
-              cpu: 100m
-              memory: 100Mi
+          # resources:
+          #   limits:
+          #     cpu: 100m
+          #     memory: 100Mi
           ports:
             - name: redis-port
               containerPort: 6379

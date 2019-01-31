@@ -20,9 +20,9 @@ spec:
           ports:
             - name: client-port
               containerPort: 3000
-          resources:
-            limits:
-              cpu: 100m
-              memory: 100Mi
+          # resources:
+          #   limits:
+          #     cpu: 100m
+          #     memory: 100Mi
           
           

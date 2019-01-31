@@ -17,10 +17,10 @@ spec:
       containers:
         - name: api
           image: scottcollins/fibonacci-api
-          resources:
-            limits:
-              cpu: 75m
-              memory: 100Mi
+          # resources:
+          #   limits:
+          #     cpu: 75m
+          #     memory: 100Mi
           ports:
             - name: api-port
               containerPort: 5000
