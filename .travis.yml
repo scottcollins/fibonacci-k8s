@@ -30,9 +30,9 @@ before_install:
   # Activate credentials from google IAM account and authorize access
   #   Credentials are stored in the service-account.json file
   - gcloud auth activate-service-account --key-file service-account.json
-
+    
   # Configure the gcloud CLI to use the proper project
-  - gcloud config set project fibonacci-k8s-230004
+  - gcloud config set project fibonacci-k8s-230302
 
   # Define a compute zone.  Get this from the k8s cluster you created
   - gcloud config set compute/zone us-east1-d
