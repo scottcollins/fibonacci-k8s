@@ -20,7 +20,7 @@ spec:
               containerPort: 5432
           resources:
             limits:
-              cpu: 300m
+              cpu: 200m
               memory: 400Mi
           volumeMounts:
             - name: data

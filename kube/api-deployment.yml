@@ -19,7 +19,7 @@ spec:
           image: scottcollins/fibonacci-api
           resources:
             limits:
-              cpu: 100m
+              cpu: 75m
               memory: 100Mi
           ports:
             - name: api-port
