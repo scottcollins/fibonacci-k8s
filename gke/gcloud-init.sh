@@ -12,6 +12,6 @@ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_
 chmod +x ./get_helm.sh
 ./get_helm.sh
 
-helm init --serviceaccount tiller
+helm init --service-account tiller --upgrade
 
 
