@@ -1,6 +1,6 @@
 gcloud config set project fibonacci-k8s-$1
 gcloud config set compute/zone us-east1-d
-gcloud container clusters get-credentials fibonacci-k8s
+gcloud container clusters get-credentials fibonacci-cluster
 
 kubectl create secret generic passwords --from-literal postgres=postgres_password
 kubectl create serviceaccount --namespace kube-system tiller
