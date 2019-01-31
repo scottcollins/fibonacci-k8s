@@ -1,6 +1,6 @@
 docker build -t scottcollins/fibonacci-client:latest -t scottcollins/fibonacci-client:$GIT_SHA ./client
 docker build -t scottcollins/fibonacci-worker:latest -t scottcollins/fibonacci-worker:$GIT_SHA ./worker
-docker build -t scottcollins/fibonacci-api:latest -t scottcollins/fibonacci-api:$GIT_SHA ./api
+docker build -t scottcollins/fibonacci-api:latest -t scottcollins/fibonacci-api:$GIT_SHA ./server
 
 docker push scottcollins/fibonacci-client:latest 
 docker push scottcollins/fibonacci-client:$GIT_SHA 
