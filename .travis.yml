@@ -3,6 +3,12 @@ sudo: required
 services:
   - docker
 
+env:
+  # sets up global environment variables
+  global:
+      # Sets a sha based on the current HEAD revision in git
+      - GIT_SHA=$(git rev-parse HEAD)
+
 before_install:
   # The following command was given after the encryption operation from travis CLI
   - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
@@ -36,3 +42,16 @@ before_install:
 
   # login to Docker
   - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+
+  # build docker test image
+  - docker build -t scottcollins/fibonacci-client-test -f ./client/Dockerfile.dev ./client
+
+script:
+  # run the tests
+  - docker run scottcollins/fibonacci-client-test npm run test -- --coverage
+
+deploy:
+    provider: script
+    script: bash ./deploy.sh
+    on:
+      branch: master
