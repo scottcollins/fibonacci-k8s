@@ -63,13 +63,13 @@ const redisPublisher = redisClient.duplicate();
 
 
 // Express route handlers
-app.get('/', (req, res) => {
+app.get('api/', (req, res) => {
   res.send('Hello, I am working');
 });
 
 // This example uses promises and async/await syntax
 // PostGres client library has promise support
-app.get('/values/all', async (req, res) => {
+app.get('api/values/all', async (req, res) => {
   console.log("Got a request for /values/all");  
 
   const valuesFromDb = await pgClient.query('select * from values');
@@ -81,7 +81,7 @@ app.get('/values/all', async (req, res) => {
 
 // This example uses callbacks.  The Callback function type has 2 parameters (err, value)
 // Redis client does not have promise support
-app.get('/values/current', async (req, res) => {
+app.get('api/values/current', async (req, res) => {
   console.log("Got a request for /values/current");  
 
   redisClient.hgetall('values', (err, values) => {
@@ -91,7 +91,7 @@ app.get('/values/current', async (req, res) => {
   });
 });
 
-app.post('/values', async (req, res) => {
+app.post('api/values', async (req, res) => {
   console.log("Got a request POSTing to /values");  
   
   const index = req.body.index;

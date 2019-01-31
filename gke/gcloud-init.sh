@@ -14,4 +14,4 @@ chmod +x ./get_helm.sh
 
 helm init --service-account tiller --upgrade
 
-
+helm install stable/nginx-ingress --name nginx-controller --set rbac.create=true
