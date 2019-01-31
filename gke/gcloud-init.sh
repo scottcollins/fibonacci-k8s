@@ -4,7 +4,7 @@ gcloud container clusters get-credentials fibonacci-cluster
 
 kubectl create secret generic passwords --from-literal postgres=postgres_password
 kubectl create serviceaccount --namespace kube-system tiller
-kubectl create clusterrolebinding tiller-account-binding --clusterrole=cluster-admin  --serviceaccount kube-system:tiller
+kubectl create clusterrolebinding tiller-account-binding --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 
 apt-get update && apt-get install curl
 
